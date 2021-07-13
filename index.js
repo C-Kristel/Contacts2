@@ -10,11 +10,12 @@ app.use(morgan('tiny'));
 app.use(bodyParser.json());
 
 //Connect to Db
-require('./DB')();
-const db = mongoose.connection;
-db.once('open', () => {
-    console.log("Connected to Database");
-});
+//require('./DB')();
+mongoose.connect(
+    process.env.Database_Connection, 
+    { useNewUrlParser: true, useUnifiedTopology: true}, () => 
+    console.log('Connected to database')
+);
 
 //routes
 app.get('/', (req, res) => {
