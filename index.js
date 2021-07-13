@@ -2,14 +2,19 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 require('dotenv/config');
-let port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
+app.use(morgan('tiny'));
 app.use(bodyParser.json());
 
-//import routes
-const postsRoute = require('./routes/posts');
-app.use('/posts', postsRoute);
+//Connect to Db
+require('./DB')();
+const db = mongoose.connection;
+db.once('open', () => {
+    console.log("Connected to Database");
+});
 
 //routes
 app.get('/', (req, res) => {
@@ -17,19 +22,14 @@ app.get('/', (req, res) => {
 });
 
 
-//connecting to database
-mongoose.connect(
-    process.env.Database_Connection, 
-    { useNewUrlParser: true, useUnifiedTopology: true}, () => 
-    console.log('Connected to database'));
+//import routes
+const postsRoute = require('./routes/posts');
+app.use('/posts', postsRoute);
 
-//listen
-//app.listen(port, () => {
-  //  console.log('App is listening on port http://localhost: ${PORT}');
-//});
-//const PORT = process.env.PORT || 3000
-//app.listen(PORT, console.log('Server running in ${process.env.NODE_ENV} mode on port ${PORT}'));
 
-//const PORT = process.env.PORT || 3000
+//Server
 
-app.listen(port, console.log(`Server running in ${process.env.NODE_ENV} mode on port http://localhost:${port}`));
+
+//app.listen(port, console.log(`Server running in ${process.env.NODE_ENV} mode on port http://localhost:${port}`));
+
+app.listen(port, console.log("Server running in port: ", port));

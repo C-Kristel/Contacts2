@@ -1,16 +1,15 @@
 const mongoose = require('mongoose');
-const PostSchema = mongoose.Schema({
-    title: {
+const PostSchema =  new mongoose.Schema({
+    fname: {
         type: String,
         required: true
     },
-    description: {
+    lname: {
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        default: Date.now
+    phoneNum: {
+        type: [String]
     }
 });
 

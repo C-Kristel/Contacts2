@@ -2,27 +2,35 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
 
-router.get('/', (req,res) => {
-    res.send('Helloooo World. This is me.');
+//GET routes
+router.get('/', async (req,res) => {
+    const posts = await Post.find();
+    res.json(posts);
 });
 
-router.get('/second', (req,res) => {
-    res.send('Second Hello World.');
+//create new post
+router.post('/new', async (req, res) => {
+    const newPost = new Post(req.body);
+    const savedPost = await newPost.save();
+    res.json(savedPost);
 });
 
-router.post('/', (req,res) => {
-    const post = new Post({
-        title: req.body.title,
-        description: req.body.description
-    });
+//GET contact
+router.get('/get/:id', async (req, res) => {
+    const a = await Post.findById({_id:req.params.id});
+    res.json(a);
+});
 
-    post.save()
-    .then(data => {
-        res.json(data);
-    })
-    .catch(err => {
-        res.json({ message: err});
-    });
+//DELETE contact
+router.delete('/delete/:id', async (req, res) => {
+    const result = await Post.findByIdAndDelete({_id:req.params.id});
+    res.json(result);
+});
+
+//UPDATE contact
+router.patch('/update/:id', async (req, res) => {
+    const patch = await Post.updateOne({_id:req.params.body});
+    res.json(patch);
 });
 
 module.exports = router;
