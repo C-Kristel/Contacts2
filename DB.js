@@ -17,11 +17,6 @@ module.exports = () => {
     }) 
     .catch(error => console.error(error.message));
 
-
-    connection.on('error', (error) => {
-        console.error(error.message);
-    })
-
     connection.on('disconnected', () => {
         console.log('Disconnected');
     })
