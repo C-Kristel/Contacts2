@@ -9,8 +9,7 @@ const port = process.env.PORT || 3000;
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
 
-//Connect to Db
-//require('./DB')();
+
 mongoose.connect(
     process.env.Database_Connection, 
     { useNewUrlParser: true, useUnifiedTopology: true}, () => 
