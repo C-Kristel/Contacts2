@@ -7,7 +7,6 @@ module.exports = () => {
     
 
     connect(uri, {
-        dbName,
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false,
@@ -18,9 +17,6 @@ module.exports = () => {
     }) 
     .catch(error => console.error(error.message));
 
-    connection.on('connected', () => {
-        console.log('Connected to Cluster [', dbName, ']');
-    })
 
     connection.on('error', (error) => {
         console.error(error.message);
